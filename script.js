@@ -27,7 +27,7 @@ $(document).ready(function() {
 			deck.push({number: j+1, suit: suit});
 		}
 	}
-	
+
 	//what does this do?
 	var shuffle = function(array) { 
 		var copy = [];
@@ -42,14 +42,26 @@ $(document).ready(function() {
 		} 
 		return copy; 
 	}
-	
+    shuffle(deck);
 	var cards_player_1 = [];
 	var cards_player_2 = [];
 	//divide out the cards into the two arrays
-	
+
+    cards_player_1 = deck.slice(0, 26);
+    cards_player_2 = deck.slice(26, 52);
+
 	
 	//create a function (algorithm) called "war" that takes two cards as parameters, compares them and returns a winner. A tie should return false.
-	function war() {
+	function war(card1, card2) {
+        if (card1.number > card2.number) {
+            return "player1";
+        }
+        if (card2.number > card1.number) {
+            return "player2";
+        }
+        else {
+            return false;
+        }
 	}
 	
 	
@@ -57,7 +69,25 @@ $(document).ready(function() {
 		//compare the cards
 		//give the winner both cards (at end of deck)
 	function play() {
-		
+        var card1 = cards_player_1[0];
+        var card2 = cards_player_2[0];
+		var winner = war(card1, card2);
+
+        if (winner === "player1") {
+            cards_player_1.push(cards1, cards2);
+            cards_player_1.shift();
+            cards_player_2.shift();
+        }
+        else if (winner === "player2") {
+            cards_player_2.push(cards1, cards2);
+            cards_player_1.shift();
+            cards_player_2.shift();
+        }
+        else {
+            cards_player_1.shift();
+            cards_player_2.shift();
+        }
+
 		//this function (defined below) will continue to the next turn
 		advance();
 	}
@@ -75,7 +105,7 @@ $(document).ready(function() {
 		}
 	}
 	advance();
-	
+
 	$(".btn").click(function() {
 		play();
 	});
